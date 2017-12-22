@@ -2,22 +2,54 @@ function AuthService($firebaseAuth) {
     var auth = $firebaseAuth();
     var authData = null;
 
-    function storeAuthData(response){
+    function storeAuthData (response) {
         authData = response;
         return authData;
     }
 
-    this.login = function(user){
+    function onSignIn (user) {
+        authData = user;
+        return auth.$requireSignIn();
+    }
+
+    function clearAuthData () {
+        authData = null;
+    }
+
+    this.login = function (user){
         return auth
             .$signInWithEmailAndPassword(user.email, user.password)
             .then(storeAuthData);
     };
 
-    this.register = function(user) {
+    this.register = function (user) {
         return auth
             .$createUserWithEmailAndPassword(user.email, user.password)
             .then(storeAuthData);
+    };
+
+    this.logout = function () {
+        return auth 
+            .$signOut()
+            .then(clearAuthData)
+    };
+    
+    this.requireAuthentication = function(){
+        return auth
+            .$waitForSignIn()
+            .then(onSignIn)
+    };
+
+    this.getUser = function (){
+        if (authData) {
+            return authData;
+        }
+    };
+
+    this.isAuthenticated = function(){
+        return !!authData; // nul || user
     }
+
 }
 
 angular

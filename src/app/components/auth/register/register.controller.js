@@ -1,4 +1,4 @@
-function RegisterController(AuthService) {
+function RegisterController(AuthService, $state) {
     var ctrl = this;
 
     // $onInit lifecycle hook for intialisation logic
@@ -18,6 +18,7 @@ function RegisterController(AuthService) {
             .then(function(user){
                 //success
                 console.log("USER: ", user);
+                $state.go('app');
             }, function(reason){
                 //error
                 console.log("ERROR: ", reason);
