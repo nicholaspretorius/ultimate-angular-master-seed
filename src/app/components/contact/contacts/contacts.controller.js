@@ -1,10 +1,15 @@
 function ContactsController($filter, $state, $timeout) {
     var ctrl = this;
     var contacts = ctrl.contacts;
-    $timeout(function(){
+    // $timeout(function(){
+    //     console.log("ctrl.contacts: ", ctrl.contacts);
+    //     ctrl.filteredContacts = $filter('contactsFilter')(ctrl.contacts, ctrl.filter);
+    // }, 1000);
+
+    ctrl.$onInit = function() {
         console.log("ctrl.contacts: ", ctrl.contacts);
         ctrl.filteredContacts = $filter('contactsFilter')(ctrl.contacts, ctrl.filter);
-    }, 1000);
+    }
 
     ctrl.goToContact = function(event) {
         $state.go('contact', { 
